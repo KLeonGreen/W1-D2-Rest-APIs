@@ -29,4 +29,30 @@ authorsRouter.get("/", (request, response) => {
   response.send(allAuthors);
 });
 
+authorsRouter.get("/:id", (request, response) => {
+  const id = request.params.id;
+  const authorsArray = JSON.parse(fs.readFileSync(authorsJSONfilePath));
+  const author = authorsArray.find((author) => author.id === id);
+  response.send(author);
+});
+
+authorsRouter.put("/:id", (request, response) => {
+  const id = request.params.id;
+  const authorsArray = JSON.parse(fs.readFileSync(authorsJSONfilePath));
+  const editedAuthorIndex = authorsArray.findIndex((author) => author.id === id);
+  const oldAuthor = authorsArray[editedAuthorIndex];
+  const updatedAuthor = { ...oldAuthor, ...request.body, updated: new Date() };
+  authorsArray[editedAuthorIndex] = updatedAuthor;
+  fs.writeFileSync(authorsJSONfilePath, JSON.stringify(authorsArray));
+  response.status(200).send(updatedAuthor);
+});
+
+authorsRouter.delete("/:id", (request, response) => {
+  const id = request.params.id;
+  const authorsArray = JSON.parse(fs.readFileSync(authorsJSONfilePath));
+  const remainigAuthors = authorsArray.filter((auth) => auth.id !== id);
+  fs.writeFileSync(authorsJSONfilePath, JSON.stringify(remainigAuthors));
+  response.status(200).send("deleted successfully");
+});
+
 export default authorsRouter;
