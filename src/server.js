@@ -9,7 +9,7 @@ import { badRequestHandler, unauthorizedHandler, notFoundHandler, genericHandler
 import mongoose from "mongoose";
 
 const server = express();
-const port = 3001;
+const port = 3002;
 
 const publicPATH = join(process.cwd(), "./public");
 
