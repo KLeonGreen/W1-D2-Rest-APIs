@@ -8,6 +8,7 @@ const dataPATH = join(dirname(fileURLToPath(import.meta.url)), "../data");
 const publicPATH = join(process.cwd(), "./public/image/blogs");
 
 const blogJSONfilePath = join(dataPATH, "blog.json");
+console.log("PATH:", blogJSONfilePath);
 const authorsJSONfilePath = join(dataPATH, "authors.json");
 
 export const getBlogs = () => readJSON(blogJSONfilePath);

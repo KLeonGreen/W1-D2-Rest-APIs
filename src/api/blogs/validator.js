@@ -2,16 +2,16 @@ import { body, checkSchema, validationResult } from "express-validator";
 import createHttpError from "http-errors";
 
 const blogSchema = {
-  title: {
-    in: ["body"],
-    isString: {
-      errorMessage: "Title is required and must be a string",
-    },
-  },
   category: {
     in: ["body"],
     isString: {
       errorMessage: "Category is required and must be a string",
+    },
+  },
+  title: {
+    in: ["body"],
+    isString: {
+      errorMessage: "Title is required and must be a string",
     },
   },
 };

@@ -6,15 +6,15 @@ import listEndpoints from "list-endpoints-express";
 import cors from "cors";
 import { join } from "path";
 import { badRequestHandler, unauthorizedHandler, notFoundHandler, genericHandler } from "./errorHandler.js";
+import mongoose from "mongoose";
 
 const server = express();
 const port = 3001;
+
 const publicPATH = join(process.cwd(), "./public");
 
 server.use(express.json());
-
 server.use(express.static(publicPATH));
-
 server.use(cors());
 
 server.use("/authors", authorsRouter);
@@ -26,7 +26,15 @@ server.use(unauthorizedHandler);
 server.use(notFoundHandler);
 server.use(genericHandler);
 
-server.listen(port, () => {
-  console.log(`listening on port ${port}`);
-  console.table(listEndpoints(server));
+const mongoURL = process.env.MONGODB_URL;
+console.log(`Mongo URL: ${mongoURL}`);
+
+mongoose.connect(mongoURL);
+
+mongoose.connection.on("connected", () => {
+  console.log("DB Connected");
+  server.listen(port, () => {
+    console.log(`listening on port ${port}`);
+    console.table(listEndpoints(server));
+  });
 });
